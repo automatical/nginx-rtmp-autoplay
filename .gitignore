@@ -1,0 +1,3 @@
+.gitignore
+data/www/hls/*
+data/sources/*
