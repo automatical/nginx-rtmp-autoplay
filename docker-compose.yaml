@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  nginx-rtmp:
+    build: nginx
+    ports:
+      - "80:80"
+      - "1935:1935"
+    volumes:
+      - ./nginx/etc/nginx:/etc/nginx
+      - ./data/www:/var/www
+    command: /bin/sh -c "nginx -g 'daemon off;'"
+  builder:
+    build: builder
+    volumes:
+      - ./data/sources:/data
+    depends_on:
+      - nginx-rtmp
+    command: /bin/sh -c "/app/run.sh /data rtmp://nginx-rtmp:1935/stream/fake-fast"
